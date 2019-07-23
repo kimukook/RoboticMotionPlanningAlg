@@ -34,9 +34,11 @@ class Graph:
         self.edges = [self.makeEdge(edge) for edge in edges]
 
         # self.nodes store all the nodes
-        self.nodes = []
-        [self.nodes.extend([edge.start, edge.end]) for edge in self.edges]
-        self.nodes = set(self.nodes)
+        # self.nodes = []
+        # [self.nodes.extend([edge.start, edge.end]) for edge in self.edges]
+        # self.nodes = set(self.nodes)
+        self.nodes = set()
+        [self.nodes.update(edge.start, edge.end) for edge in self.edges]
 
         # self.neighbors store all the nodes as key, the edge end node and cost as element
         self.neighbors = {node: [] for node in self.nodes}
@@ -77,7 +79,7 @@ class Graph:
         while previous is not None:
             optimal_path.append(previous)
             previous = self.parent[previous]
-
+        optimal_path.reverse()
         return self.distances[end_node], optimal_path
 
 
@@ -87,8 +89,10 @@ if __name__ == '__main__':
     ("e", "f", 9)]
 
     G = Graph(e)
-    optimal_distance, optimal_path = G.dijkstra('a', 'e')
+    opt_distance, opt_path = G.dijkstra('a', 'd')
+    print(opt_distance)
+    print(opt_path)
     # solution:
     # optimal_distance: 20
     # optimal_path
-    # Out: ['e', 'f', 'c', 'a']
+    # Out: ['a', 'c', 'f', 'e']
