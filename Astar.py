@@ -42,6 +42,11 @@ class Node:
 
 class Graph:
     def __init__(self, input_matrix, move_guide):
+        '''
+        Create the graph for implementing the A* algorithm
+        :param input_matrix :  Edge connection info
+        :param move_guide   :  The feasible movement direction for each step
+        '''
         self.connect_matrix = input_matrix
         self.nodes        = {}
         self.open_list    = []  # visited not expanded
@@ -66,6 +71,10 @@ class Graph:
         self.optimal_path = []
 
     def nodes_maker(self):
+        '''
+        Save all the nodes, neighbors, edge connection and cost
+        :return:
+        '''
         for i in range(self.n):
             for j in range(self.m):
                 position = [i, j]
@@ -95,6 +104,12 @@ class Graph:
         return sum([ (x - y) ** 2 for x, y in zip(current_node, end_node)])
 
     def astar(self, start, end):
+        '''
+        Compute the A* solution for the path from start node to end node
+        :param start    :   Start node
+        :param end      :   End node
+        :return:
+        '''
         # initialize the f values and g values to be infinity at the beginning
         self.nodes_g = {(i, j): inf for j in range(self.m) for i in range(self.n)}
         self.nodes_f = {(i, j): inf for j in range(self.m) for i in range(self.n)}

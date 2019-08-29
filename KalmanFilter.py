@@ -55,12 +55,12 @@ class KalmanFilter:
         y = y.reshape(-1, 1)
         # compute the Kalman gain
         S = np.dot(self.H, np.dot(self.P, self.H.T)) + self.R
-        K = np.dot(self.P, np.dot(self.H.T, np.linalg.inv(S)))
+        K = np.dot(self.P, np.dot(self.H.T, np.linalg.pinv(S)))
 
         x = x + np.dot(K, (y - np.dot(self.H, x)))
         I = np.identity(self.n)
-        self.P = np.dot(I - np.dot(K, self.H), np.dot(self.P, (I - np.dot(K, self.H)).T)) + np.dot(K, np.dot(self.R, K.T))
-        # self.P = np.dot((I - np.dot(K, self.H)), self.P)
+        # self.P = np.dot(I - np.dot(K, self.H), np.dot(self.P, (I - np.dot(K, self.H)).T)) + np.dot(K, np.dot(self.R, K.T))
+        self.P = np.dot((I - np.dot(K, self.H)), self.P)
         return x
 
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
     measurements = np.vstack((xm, ym, zm))
 
-    plt.figure()
+    plt.figure(figsize=(16, 9))
     plt.scatter(xm, zm, label='measurements')
     plt.plot(xr, zr, label='truth', c='r')
     plt.xlabel('x')
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     # ==========  Initialize A, B, H, Q, R matrices for the dynamic system ==========
     # x = Ax + Bu + w
     # y = Hx + v
-    P = 100.0 * np.identity(9)
+    P = 10 * np.identity(9)
     A = np.matrix([[1.0, 0.0, 0.0, dt, 0.0, 0.0, 1/2.0*dt**2, 0.0, 0.0],
                   [0.0, 1.0, 0.0, 0.0,  dt, 0.0, 0.0, 1/2.0*dt**2, 0.0],
                   [0.0, 0.0, 1.0, 0.0, 0.0,  dt, 0.0, 0.0, 1/2.0*dt**2],
@@ -195,8 +195,10 @@ if __name__ == "__main__":
         x0 = kf.update(x0, measurements[:, i])
         xf[:, i] = np.copy(x0.T[0])
 
-    plt.plot(xf[0, :], xf[2, :], label='Kalman filter predictions')
+    plt.axhline(0, color='k')
+    plt.plot(xf[0, :], xf[2, :], label='Kalman filter predictions', c='g')
     plt.legend()
+    print('z min = ', np.min(xf[2, :]))
     plt.show()
 
 

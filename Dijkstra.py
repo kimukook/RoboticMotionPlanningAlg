@@ -69,10 +69,14 @@ class Graph:
             self.queue.remove(current_node)
 
             for neighbor, cost in self.neighbors[current_node]:
-                alt_cost = self.distances[current_node] + cost
-                if alt_cost < self.distances[neighbor]:
-                    self.distances[neighbor] = alt_cost
-                    self.parent[neighbor] = current_node
+                # Only update the nodes that are still in the queue.
+                # The points removed from the queue is optimzied.
+                if neighbor in self.queue:
+                    alt_cost = self.distances[current_node] + cost
+                    # If a shorter path is found, update the cost of this neighbor
+                    if alt_cost < self.distances[neighbor]:
+                        self.distances[neighbor] = alt_cost
+                        self.parent[neighbor] = current_node
 
         optimal_path = list(end_node)
         previous = self.parent[end_node]

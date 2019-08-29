@@ -1,18 +1,17 @@
 '''
 This is a simple script that implements the K-means clustering algorithm.
-Reference link: https://dev.to/mxl/dijkstras-algorithm-in-python-algorithms-for-beginners-dkc
-Another good reference: https://www.geeksforgeeks.org/printing-paths-dijkstras-shortest-path-algorithm/
-=========================
+=============================
 Author  :  Muhan Zhao
 Date    :  Aug. 12, 2019
 Location:  West Hill, LA, CA
-=========================
+=============================
 '''
 
 import numpy as np
 import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
+
 
 class KMeans:
     def __init__(self, data, K):
