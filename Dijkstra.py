@@ -8,7 +8,7 @@ Date    :  Jul. 16, 2019
 Location:  West Hill, LA, CA
 =========================
 '''
-
+import copy
 inf = 1e+20
 
 
@@ -62,7 +62,7 @@ class Graph:
         self.distances = {node: inf for node in self.nodes}
         self.distances[start_node] = 0
         self.parent = {node: None for node in self.nodes}
-        self.queue = self.nodes
+        self.queue = copy.copy(self.nodes)  # shallow copy, deep copy will refer queue as nodes and change nodes as well
 
         while len(self.queue) > 0 and end_node in self.queue:  # while queue is not empty and end_node not visited
             current_node = min(self.queue, key=lambda node: self.distances[node])

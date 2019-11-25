@@ -59,8 +59,8 @@ class KalmanFilter:
 
         x = x + np.dot(K, (y - np.dot(self.H, x)))
         I = np.identity(self.n)
-        # self.P = np.dot(I - np.dot(K, self.H), np.dot(self.P, (I - np.dot(K, self.H)).T)) + np.dot(K, np.dot(self.R, K.T))
-        self.P = np.dot((I - np.dot(K, self.H)), self.P)
+        self.P = np.dot(I - np.dot(K, self.H), np.dot(self.P, (I - np.dot(K, self.H)).T)) + np.dot(K, np.dot(self.R, K.T))
+        # self.P = np.dot((I - np.dot(K, self.H)), self.P)
         return x
 
 
